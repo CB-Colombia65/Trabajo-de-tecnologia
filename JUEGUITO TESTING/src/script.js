@@ -228,12 +228,7 @@ class GameScene extends Phaser.Scene {
                 child.enableBody(true, child.x, 0, true, true);
             });
 
-            var x = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-            var bomb = this.bombs.create(x, 16, 'bomb');
-            bomb.setBounce(1);
-            bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-
+            this.spawnBombs();
             this.spawnMeteors(5);
 
             var powerup = this.powerups.create(Phaser.Math.Between(0, 800), 0, 'powerup');
@@ -293,20 +288,17 @@ class GameScene extends Phaser.Scene {
         }
     }
 
-    adjustDifficulty() {
-        let bombCount, meteorCount;
+    spawnBombs() {
+        let bombCount;
         switch (this.difficulty) {
             case 'easy':
                 bombCount = 1;
-                meteorCount = 2;
                 break;
             case 'medium':
                 bombCount = 2;
-                meteorCount = 3;
                 break;
             case 'hard':
                 bombCount = 4;
-                meteorCount = 5;
                 break;
         }
 
@@ -316,6 +308,22 @@ class GameScene extends Phaser.Scene {
             bomb.setBounce(1);
             bomb.setCollideWorldBounds(true);
             bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        }
+    }
+
+    adjustDifficulty() {
+        this.spawnBombs();
+        let meteorCount;
+        switch (this.difficulty) {
+            case 'easy':
+                meteorCount = 2;
+                break;
+            case 'medium':
+                meteorCount = 3;
+                break;
+            case 'hard':
+                meteorCount = 5;
+                break;
         }
 
         this.spawnMeteors(meteorCount);
